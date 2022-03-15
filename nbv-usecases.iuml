@@ -1,0 +1,49 @@
+@startuml nbt_usecases
+left to right direction
+actor Treasurers as treasurers
+actor Contributor as contributor
+actor "Substrate Users" as substrate_users
+package Bitcoin {
+  usecase "Sign Transactions" as sign_transactions
+  usecase "Sends Bitcoin" as send_bitcoin
+}
+package Substrate {
+  usecase "Save xpubs" as save_xpubs
+  usecase "Select Treasurers" as select_treasurers
+  usecase gen_recv_addresses as "Generate Receiving 
+Addresses"
+  usecase "Save PSBTs" as save_psbts
+}
+contributor --> send_bitcoin
+treasurers --> save_psbts
+treasurers --> save_xpubs
+substrate_users --> select_treasurers
+treasurers --> gen_recv_addresses
+treasurers --> sign_transactions 
+Substrate --> Bitcoin : broadcasts
+
+note right of (save_xpubs) 
+Public keys used by descriptors
+to construct wallets
+endnote 
+
+note right of (gen_recv_addresses)
+Verifiable, secure, and convenient
+endnote
+
+note right of (save_psbts)
+Intermediate, partially signed
+transactions
+endnote
+
+note right of (select_treasurers)
+Via election, governance, etc
+endnote
+
+note left of (sign_transactions)
+Hardware wallet compatible, using
+Spectre Desktop
+endnote
+
+@enduml
+
